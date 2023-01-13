@@ -10,15 +10,23 @@ import java.util.Scanner;
  * @version 1.0, 09/11/15.
  */                           
 public class Disco implements ServiciosDisco  {
-  private static final short CD = 1;
-  private static final short DVD = 2;
-  private static final short BR = 3;
-  private static final int ANHO1 = 1900; // Primer anho vÃ¡lido
-  private static final int ANHOU = 2016; // Ultimo anho valido
+  private static final short CD = 1,
+                             DVD = 2,
+                             BR = 3;
+  private static final int   ANHO1 = 1900, // Primer anho valido
+                             ANHOU = 2016; // Ultimo anho valido
+  private static final int MAX_PERMITIDAS =  9999;
+  private static final int LUG_TD = 1,
+                           LUG_NOMBRE = 40,
+                           LUG_ANHO = 4,
+                           LUG_PERMITIDAS = 4,
+                           LUG_ACTIVAS = 4;
+  private static final String ESPACIOS = "                    " 
+                                       + "                    ";
   /* atributos de la clase */
   private final short TIPO_DISCO; // 1:CD, 2:DVD, 3:BR
   private final String NOMBRE;    // artista o pelicula
-  private final int FECHA;        // fecha de grabacion
+  private final int ANHO;        // fecha de grabacion
   private int permitidas;         // Maximo transmisiones permitidas
   private int activas;            // Transmisiones activas
   
@@ -43,11 +51,11 @@ public class Disco implements ServiciosDisco  {
     this.NOMBRE = checaCadena(sc.nextLine());
     System.out.print("Ahora toca el anho en que fue grabado "
                        + "(> 1900):-->");
-    this.FECHA = checaFecha(sc.nextInt(),ANHO1,ANHOU);
+    this.ANHO = checaFecha(sc.nextInt(),ANHO1,ANHOU);
     sc.nextLine();
     System.out.print("Dame ahora el numero de "
-                       + "transmisiones permitidas (1-20) -->");
-    this.permitidas = checaRangos(sc.nextInt(),1,20);
+                       + "transmisiones permitidas (1-"+ MAX_PERMITIDAS +") -->");
+    this.permitidas = checaRangos(sc.nextInt(),1,MAX_PERMITIDAS);
     sc.nextLine();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
     System.out.println("Gracias");
     sc.close();
@@ -63,7 +71,7 @@ public class Disco implements ServiciosDisco  {
   public Disco ( short tipo, String nombre, int fecha)  {
     this.TIPO_DISCO = checaTipo(tipo,CD,BR);
     this.NOMBRE = nombre;
-    this.FECHA = checaFecha(fecha,ANHO1,ANHOU);
+    this.ANHO = checaFecha(fecha,ANHO1,ANHOU);
   }
   
   /**
@@ -78,8 +86,8 @@ public class Disco implements ServiciosDisco  {
   public Disco ( short tipo, String nombre, int fecha, int permitidas)  {
     this.TIPO_DISCO = checaTipo(tipo,CD,BR);
     this.NOMBRE = nombre;
-    this.FECHA = checaFecha(fecha,ANHO1,ANHOU);
-    this.permitidas = checaRangos(permitidas,1,20);
+    this.ANHO = checaFecha(fecha,ANHO1,ANHOU);
+    this.permitidas = checaRangos(permitidas,1, MAX_PERMITIDAS);
   }
   
   /**
@@ -111,7 +119,7 @@ public class Disco implements ServiciosDisco  {
    */ 
   @Override
   public int getANHO()   {
-    return this.FECHA;
+    return this.ANHO;
   }
   
   /**
@@ -141,7 +149,7 @@ public class Disco implements ServiciosDisco  {
    */
   @Override
   public void setPermitidas(int permisos) {
-    this.permitidas = checaRangos(permisos,1,20);
+    this.permitidas = checaRangos(permisos,1, MAX_PERMITIDAS);
   }
   
   /**
@@ -152,26 +160,7 @@ public class Disco implements ServiciosDisco  {
   @Override
   public void setActivas(int activ)  {
     this.activas= checaRangos(activ,1,this.permitidas);
-}
-  
-  /** Proporciona una cadena con los distintos campos ocupando un
-    * lugar definido.
-    *
-    * 
-    * @return La informacion del disco linealizada en forma de
-    *         cadena, todos los discos con la misma informacion.
-    */  
-    @Override
-  public String toString()   {
-    return ("Su " +
-                ( this.TIPO_DISCO == CD
-                ? "CD"
-                : this.TIPO_DISCO == DVD
-                ? "DVD"
-                : "BLUERAY" ) 
-    + " es: " + this.NOMBRE + " del año " + this.FECHA + ", con " + this.permitidas + " transmisiones permitidas." );
-  }
-  
+} 
   /**
    * Muestra de forma estatica el contenido de este disco.
    * 
@@ -179,13 +168,14 @@ public class Disco implements ServiciosDisco  {
    *         linea.
    */
   @Override
-  public String muestraDisco(String titulo)  {
-    return ( ( this.TIPO_DISCO == CD
+  public String muestraDisco(String encabezado)  {
+    return ( encabezado + ( this.TIPO_DISCO == CD
             ? "CD"
             : this.TIPO_DISCO == DVD
             ? "DVD"
             : "BLUERAY" ) 
-            + " " + this.NOMBRE + ", " + this.FECHA + ",  " + this.permitidas + " tx permitidas." );
+            + " " + this.NOMBRE + ", " + this.ANHO 
+            + ",  " + this.permitidas + " tx permitidas." );
   }
   
   /**
@@ -205,18 +195,31 @@ public class Disco implements ServiciosDisco  {
    */
   @Override
   public boolean terminaTransmision()   {
-    return false;
+    boolean hayActivas = this.activas > 0;
+    this.activas -= hayActivas ? 1 : 0 ;
+    return hayActivas;
   }
-  
+ /** Proporciona una cadena con los distintos campos ocupando un
+    * lugar definido.
+    *
+    * 
+    * @return La informacion del disco linealizada en forma de
+    *         cadena, todos los discos con la misma informacion.
+    */  
+    @Override
+  public String toString(){
+    return ""+ editaNum(TIPO_DISCO, LUG_TD) + editaCad(NOMBRE, LUG_NOMBRE) +
+                    editaNum(ANHO, LUG_ANHO) +  editaNum(permitidas, LUG_PERMITIDAS) 
+                    + editaNum(activas, LUG_ACTIVAS);
+  }
   /**
    * Duplica a este disco, construyendo otro objeto con los mismos
    * valores, pero con identidad distintinta.
-   *
    * @return un nuevo disco identico al que se le pide.
    */
   @Override
   public ServiciosDisco copiaDisco( )   {
-    return null;
+    return  new Disco(TIPO_DISCO, NOMBRE, ANHO, permitidas);
   }
   
   /**
@@ -279,4 +282,25 @@ public class Disco implements ServiciosDisco  {
         ? limS
         : que;
   }
+  /**
+   * Edita los numeros en el metodo toString a un numero fijo de caracteres
+   * @param valor
+   * @param lugares
+   * @return
+   */
+  private String editaNum(int valor, int lugares){
+    String conEspacios = ESPACIOS + valor;
+    return conEspacios.substring(conEspacios.length()-lugares);
+  }
+  /**
+   * Edita las cadenas de caracteres en el metodo toString a un numero fijo de caracteres
+   * @param valor
+   * @param lugares
+   * @return
+   */
+  private String editaCad(String cadena, int lugares){
+    String conEspacios = cadena + ESPACIOS;
+    return conEspacios.substring(0, lugares);
+  }
+
 }
