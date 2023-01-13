@@ -11,12 +11,11 @@ public class Usuario {
         Disco elTuyo = new Disco( (short )2, "Descifrando enigma", 2015, 30 ); 
         String mio = elMio.muestraDisco("Se trata del disco el Mio");
         System.out.println(mio);
-        System.out.println("Metodo toString() \t");
-        System.out.println("*" + elMio + "*");
+        System.out.println("Metodo toString() \t" + elMio);
 
         elTuyo.setActivas( elTuyo.getActivas()+ 5);
-        String tuyo = "El contenido de elTuyo con toString(): \t" + elTuyo;
-        System.out.println(tuyo);
+        System.out.println(elTuyo.daTransmision());
+        System.out.println("elTuyo toString(): \t" + elTuyo);
 
     }
 }

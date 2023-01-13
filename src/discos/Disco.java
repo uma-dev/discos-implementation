@@ -1,5 +1,6 @@
 package discos;
 import java.util.Scanner;
+import java.util.GregorianCalendar;
 
 /**
  * Disco digital para su uso por una companhia de 
@@ -21,6 +22,11 @@ public class Disco implements ServiciosDisco  {
                            LUG_ANHO = 4,
                            LUG_PERMITIDAS = 4,
                            LUG_ACTIVAS = 4;
+  private static final String DIAS = "         " + "domingo  "
+                                     + "lunes    " + "martes   "
+                                     + "miercoles" + "jueves   "
+                                     + "viernes  " + "sabado   " ;
+  private static final int TAM_DIA = 9;
   private static final String ESPACIOS = "                    " 
                                        + "                    ";
   /* atributos de la clase */
@@ -187,9 +193,41 @@ public class Disco implements ServiciosDisco  {
    */
   @Override
   public String daTransmision( )   {
-    return null;
+    GregorianCalendar cal = new GregorianCalendar(); 
+    boolean siHay = activas < permitidas ? true : false;
+    activas += siHay ? 1: 0;
+    return siHay ? ("Tx a las: " + extraeHora(cal) + 
+                " del " + extraeFecha(cal)) : "No hay Tx disponibles";
+  } 
+
+  private static String extraeHora( GregorianCalendar calendar){
+    int hora = calendar.get(calendar.HOUR);
+    int minutos = calendar.get(calendar.MINUTE);
+    String minutosString;
+    String ampm = calendar.get(calendar.AM_PM) == calendar.AM 
+                  ? "AM"
+                  : "PM";
+    hora = (hora == 0 && calendar.AM_PM == calendar.PM)
+          ? 12 
+          : hora;
+    minutosString =  minutos<10
+                  ? "0"+minutos 
+                  : "" + minutos;    
+    return "" + hora + ":" + minutosString + " " + ampm;
   }
-  
+
+  private static String nombreDia (int numDia){
+    return DIAS.substring(TAM_DIA*numDia, TAM_DIA*(numDia+1)).trim();
+  }
+
+  private static String extraeFecha( GregorianCalendar calendar){
+    int dia = calendar.get(calendar.DAY_OF_MONTH);
+    int mes = calendar.get(calendar.MONTH)+1; //0 corresponde a enero
+    int anho = calendar.get(calendar.YEAR);
+    int diaSemana = calendar.get(calendar.DAY_OF_WEEK);
+    return "" + nombreDia(diaSemana) + " " + dia+ "/" + mes + "/" + anho;
+  }
+
   /**
    * Actualiza el numero de transmisiones activas.
    */
