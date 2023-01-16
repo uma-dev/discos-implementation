@@ -169,7 +169,7 @@ public class Disco implements ServiciosDisco  {
 } 
   /**
    * Muestra de forma estatica el contenido de este disco.
-   * 
+   * @param encabezado Texto antes del formato en plano del disco
    * @return una cadena con la informacion y que contiene saltos de
    *         linea.
    */
@@ -185,10 +185,22 @@ public class Disco implements ServiciosDisco  {
   }
   
   /**
-   * Otorga una transmision, contestando con la fecha y hora en que
+   * Otorga una transmision dada una fecha y una hora, contestando con la fecha y hora en que
    * la esta dando. Si no la puede dar, responde
    * negativamente. Actualiza el numero de transmisiones activas.
    *
+   * @return Un mensaje diciendo si pudo o no otorgar la transmision.
+   */
+  public String daTransmision( GregorianCalendar calendar)   {
+    boolean siHay = activas < permitidas ? true : false;
+    activas += siHay ? 1: 0;
+    return siHay ? ("Tx a las: " + extraeHora(calendar) + 
+                " del " + extraeFecha(calendar)) : "No hay Tx disponibles";
+  } 
+ /**
+   * Otorga una transmision, contestando con la fecha y hora en que
+   * la realizo, si no la puede dar, responde
+   * negativamente, actualiza el numero de transmisiones activas.
    * @return Un mensaje diciendo si pudo o no otorgar la transmision.
    */
   @Override
@@ -199,7 +211,11 @@ public class Disco implements ServiciosDisco  {
     return siHay ? ("Tx a las: " + extraeHora(cal) + 
                 " del " + extraeFecha(cal)) : "No hay Tx disponibles";
   } 
-
+  /**
+   * Obtiene la fecha con formato a partir de un objeto de la clase GregorianCaledar
+   * @param calendar calendario de la clase GregorianCalendar
+   * @return la hora con formato
+   */
   private static String extraeHora( GregorianCalendar calendar){
     int hora = calendar.get(calendar.HOUR);
     int minutos = calendar.get(calendar.MINUTE);
@@ -215,11 +231,19 @@ public class Disco implements ServiciosDisco  {
                   : "" + minutos;    
     return "" + hora + ":" + minutosString + " " + ampm;
   }
-
+/**
+ * Obtiene el nombre de la semana correspondiente a su posicion
+ * @param numDia
+ * @return
+ */
   private static String nombreDia (int numDia){
     return DIAS.substring(TAM_DIA*numDia, TAM_DIA*(numDia+1)).trim();
   }
-
+/**
+ * Obtiene la fecha con formato de un objeto GregorianCalendar.
+ * @param calendar calendario de la clase GregorianCalendar.
+ * @return fecha con formato.
+ */
   private static String extraeFecha( GregorianCalendar calendar){
     int dia = calendar.get(calendar.DAY_OF_MONTH);
     int mes = calendar.get(calendar.MONTH)+1; //0 corresponde a enero
@@ -263,7 +287,9 @@ public class Disco implements ServiciosDisco  {
   /**
    * Verifica que el tipo de disco que se guarde sea el numero 
    * correcto.
-   * @param tipo un numero entero.
+   * @param tipo un numero entero. 
+   * @param limI limite inferior
+   * @param limS limite superior
    * @return un 1, 2 o 3, que son tipos correctos.
    */
   private short checaTipo(short tipo, short limI, short limS) {
@@ -290,13 +316,12 @@ public class Disco implements ServiciosDisco  {
    * Verifica que el anho de grabacion cumpla estar 
    * entre primerAnho y ultimoAnho.
    *
-   * @param fecha, el anho de grabacion.
+   * @param fecha el anho de grabacion.
    * @param primerAnho el limite iferior valido.
    * @param ultimoAnho el limite superior valido.
    * @return un entero tal que primerAnho <= fecha <= ultimoAnho.
    */
-  private int checaFecha(int fecha,int primerAnho, 
-                         int ultimoAnho)  {
+  private int checaFecha(int fecha,int primerAnho, int ultimoAnho)  {
     return fecha < primerAnho
       ? primerAnho
       : fecha > ultimoAnho
@@ -308,12 +333,12 @@ public class Disco implements ServiciosDisco  {
    * Verifica que el entero dado que se guarde este entre 
    * los rangos dados.
    *
-   * @param que, un numero entero.
+   * @param que un numero entero.
    * @param limI entero menor valido.
    * @param limS entero mayor valido.
    * @return un entero tal que limI <= entero <= limS.
    */
-  private int checaRangos(int que,int limI, int limS)  {
+  private int checaRangos(int que, int limI, int limS)  {
     return que < limI
       ? limI
       : que > limS
@@ -332,7 +357,7 @@ public class Disco implements ServiciosDisco  {
   }
   /**
    * Edita las cadenas de caracteres en el metodo toString a un numero fijo de caracteres
-   * @param valor
+   * @param cadena 
    * @param lugares
    * @return
    */
