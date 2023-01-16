@@ -1,5 +1,8 @@
 package discos;
 import java.util.Scanner;
+
+import javax.xml.transform.stax.StAXResult;
+
 import java.util.GregorianCalendar;
 
 /**
@@ -338,7 +341,7 @@ public class Disco implements ServiciosDisco  {
    * @param limS entero mayor valido.
    * @return un entero tal que limI <= entero <= limS.
    */
-  private int checaRangos(int que, int limI, int limS)  {
+  public static int checaRangos(int que, int limI, int limS)  {
     return que < limI
       ? limI
       : que > limS
