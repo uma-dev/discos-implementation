@@ -107,6 +107,18 @@ public class Catalogo {
         this.fechasTxActivas = new GregorianCalendar[catalogo.length][];
         this.historico = new GregorianCalendar[catalogo.length][2][]; 
         this.numHist = new int[catalogo.length]; //cada disco tiene su propio numero de tx inciadas y terminadas
+
+        for (int i = 0; i< numDscs; i++){
+            if (arregloInicial[i] == null){
+                continue;
+            }
+            this.catalogo[i] = arregloInicial[i];
+            int numPrest = catalogo[i].getPermitidas();
+            fechasTxActivas[i] = new GregorianCalendar[numPrest];
+            historico[i][0] = new GregorianCalendar[numPrest*2];
+            historico[i][1] = new GregorianCalendar[numPrest*2];
+            this.numDscsRegistrados++; //se actualiza el numero de discos registrados
+        }
     }
 
 }
