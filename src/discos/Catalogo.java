@@ -280,5 +280,29 @@ public class Catalogo {
         String fechaString = Disco.extraeFecha(fecha) + (fecha.get(fecha.HOUR) == 1 ? " A la" : "A las") + Disco.extraeHora(fecha) ;
         return fechaString;
     }
-
+    /**
+     * Muestra las fechas de transmision activas de un disco en particular.
+     * @param cualDisco un entero con la posicion del disco a mostrar.
+     * @return una cadena con el texto solicitado.
+     */
+    public String muestraActivas (int cualDisco ){
+        if(catalogo==null || cualDisco<=0 || cualDisco>catalogo.length){
+            System.out.println("No existe el disco dentro del catalogo");
+            return null;
+        }
+        int cuantas = catalogo[cualDisco].getActivas();
+        if(cuantas<=0){
+            System.out.println("EL disco no tiene transmisiones activas");
+            return null;
+        }
+        String cadena = catalogo[cualDisco].muestraDisco("Transmisiones activas: ") + "\n";
+        for (int i=0; i< cuantas; i++){
+            if(fechasTxActivas[cualDisco][i] != null ){
+                cadena += " [" + i + "]\t"+ daCalendario(fechasTxActivas[cualDisco][i]) + "\n";
+            }
+            else cadena += "fecha no registrada \n";
+        }
+        return cadena;
+    }
+    
 }
