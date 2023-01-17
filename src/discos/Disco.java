@@ -223,10 +223,10 @@ public class Disco implements ServiciosDisco  {
     int hora = calendar.get(calendar.HOUR);
     int minutos = calendar.get(calendar.MINUTE);
     String minutosString;
-    String ampm = calendar.get(calendar.AM_PM) == calendar.AM 
+    String ampm = calendar.get(calendar.AM_PM) == calendar.AM
                   ? "AM"
                   : "PM";
-    hora = (hora == 0 && calendar.AM_PM == calendar.PM)
+    hora = (hora%12 == 0 && calendar.get(calendar.AM_PM) == calendar.PM)
           ? 12 
           : hora;
     minutosString =  minutos<10

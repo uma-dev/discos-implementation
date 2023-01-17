@@ -390,6 +390,8 @@ public class Catalogo {
             System.out.println(" Indice fuera del rango\n");
             return false;
         }
+        System.out.println(elemento);
+        System.out.println(array.length);
         for (int i=elemento+1; i<array.length || array[i]!=null ;i++){
             array[i-1]=array[i];
             array[i] = null; //El ulimo elemento queda valiendo null, de otra forma estaria repetido
@@ -406,7 +408,7 @@ public class Catalogo {
         if(cualDisco<0 || cualDisco>=this.numDscsRegistrados){
             return "Este disco no existe ";
         }
-        String cadena = "  Historico del disco: " 
+        String cadena = "  Historico del disco " 
         + catalogo[cualDisco].getNOMBRE()+ "\n";
         if(numHist[cualDisco] ==0 ){
             cadena += "\tDisco sin historicos\n";
@@ -425,7 +427,7 @@ public class Catalogo {
      * @return Una cadena con los historicos en formato libre.
      */
     public String muestraHistoricos (){
-        String cadena = "Historico de los discos que lo tienen: \n";
+        String cadena = "Historico de los discos que lo tienen: \n---------------------------------------\n";
         for(int i= 0; i<this.numDscsRegistrados ;i++ ){
             if(catalogo[i] != null ) {
                 cadena += muestraHist(i)+ "\n";
@@ -444,21 +446,20 @@ public class Catalogo {
         Disco elDisco;
         int opcion;
 
-        System.out.println("---------Bienvenido al sistema----------");
+        System.out.println("\n---------Bienvenido al sistema----------");
         do{
             System.out.println("Menu de opciones\n"
                                 + "======================"); 
             for (int i=0; i<MENU_CATALOGO.length; i++){
                 System.out.println( (i<10 ? " ": "") 
-                                    +"["  + i + "]" 
+                                    +"["  + i + "] " 
                                     + MENU_CATALOGO[i] );
             }
 
-            System.out.println("\n\nElige una opcion (terminando con Enter:) --> : ");
+            System.out.println("\n Elige una opcion              ----->");
             opcion= pideNum(cons, "" , 0, MENU_CATALOGO.length-1 );
             int cualDisco;
             int sigDato;
-            cons.nextLine(); 
             switch (opcion){
                 case SALIR : 
                     System.out.println("Programa terminado, hasta pronto. ");
