@@ -155,5 +155,40 @@ public class Catalogo {
     public int[] getNumHist(){
         return this.numHist;
     }
+    /**
+     * Actualiza el catalogo de discos.
+     * @param catalogo  una lista de objetos Disco.
+     */
+    public void setCatalogo( Disco[] catalogo ){
+        this.catalogo=catalogo;
+    } 
+    /**
+     * Actualiza el entero que corresponde al numero de discos registrados.
+     * @param numDscsRegistrados corresponde al numero de discos registrados.
+     */
+    public void setNumDscsRegistrados( int numDscsRegistrados){
+        this.numDscsRegistrados= numDscsRegistrados;
+    }
+    /**
+     * Actualiza el arreglo de dos dimensiones de elementos GregorianCalendar. 
+     * @param fechasTxActivas  un arreglo de dos dimensiones.
+     */
+    public void setFechasTxActivas(GregorianCalendar[][] fechasTxActivas ){
+        this.fechasTxActivas=fechasTxActivas;
+    }
+    /**
+     * Actualiza el arreglo de tres dimensiones que representa el historico de cada disco.
+     * @param historico arreglo de tres dimensiones, historico.
+     */
+    public void setHistorico( GregorianCalendar[][][] historico){
+        this.historico=historico;
+    }
+    /**
+     * actualiza un arreglo de enteros que representa el numero de registros por cada disco en un catalogo.
+     * @param numHist arreglo de una dimension de enteros, numHist.
+     */
+    public void setNumHist( int[] numHist ){
+       this.numHist = numHist;
+    }
 
 }
