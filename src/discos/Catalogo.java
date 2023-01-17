@@ -159,8 +159,35 @@ public class Catalogo {
      * Actualiza el catalogo de discos.
      * @param catalogo  una lista de objetos Disco.
      */
-    public void setCatalogo( Disco[] catalogo ){
-        this.catalogo=catalogo;
+    public void setCatalogo( Disco[] newCatalogo ){
+        int catalogoLen = newCatalogo == null ? 0 : newCatalogo.length;
+        if (catalogoLen == 0){
+            this.catalogo = null;
+            this.numDscsRegistrados = 0;
+            this.fechasTxActivas = null;
+            this.historico = null;
+            this.numHist = null;
+            return;
+        }
+        //Inicializacion de atributos en cero y al nuevo tamanho
+        this.catalogo = new Disco[catalogoLen];
+        this.numDscsRegistrados = 0;
+        this.fechasTxActivas = new GregorianCalendar[catalogoLen][];
+        this.historico = new GregorianCalendar[catalogoLen][2][];
+        this.numHist = new int[catalogoLen];
+        //Copiamos elemento a elemento 
+        for (int i = 0; i< catalogoLen; i++){
+            if (newCatalogo[i] == null){
+                continue;
+            }
+            this.catalogo[i] = newCatalogo[i];
+            int numPrest = catalogo[i].getPermitidas();
+            catalogo[i].setActivas(0);
+            fechasTxActivas[i] = new GregorianCalendar[numPrest]; 
+            historico[i][0] = new GregorianCalendar[numPrest*2];
+            historico[i][1] = new GregorianCalendar[numPrest*2];
+            this.numDscsRegistrados++; //se actualiza el numero de discos registrados
+        }
     } 
     /**
      * Actualiza el entero que corresponde al numero de discos registrados.
