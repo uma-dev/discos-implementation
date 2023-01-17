@@ -363,7 +363,7 @@ public class Catalogo {
      * @param msg Cadena de texto para mostrar en el selector.
      * @param min Limite inferior, un entero.
      * @param max Limite superior, un entero.
-     * @return el numero seleccionado.
+     * @return el numero seleccionado o regresa -1 si esta fuera del rango.
      */
     private static int pideNum(Scanner cons, String msg, int min, int max){
         int num = -1;
@@ -433,6 +433,141 @@ public class Catalogo {
             }
         }
         return cadena;
-    }    
+    }  
 
+    public void conectaCatalogo(){
+        // Saludar al usuario
+        // Mostrarle el menu
+        // Pedirle su opcion
+        // De acuerdo con la opcion elegida, mostrar el bloque correspondiente
+        Scanner cons = new Scanner(System.in);
+        Disco nuevoDisco;
+        Disco elDisco;
+        int opcion;
+
+        System.out.println("---------Bienvenido al sistema----------");
+        do{
+            System.out.println("menu de opciones de trabajo\n"
+                                + "======================"); 
+            for (int i=0; i<MENU_CATALOGO.length; i++){
+                System.out.println( (i<10 ? " ": "") 
+                                    +"["  + i + "]" 
+                                    + MENU_CATALOGO[i] );
+            }
+
+            System.out.println("\n\nElige una opcion (terminando con Enter:) --> : ");
+            opcion= pideNum(cons, "" , 0, MENU_CATALOGO.length-1 );
+            int cualDisco;
+            int sigDato;
+            cons.nextLine(); 
+            switch (opcion){
+                case SALIR : 
+                    System.out.println("Programa terminado, hasta pronto. ");
+                    continue;
+                case AGREGA:
+                    nuevoDisco = new Disco();
+                    if(addDisco(nuevoDisco)){
+                        System.out.println( "El disco " + nuevoDisco.getNOMBRE() 
+                                             + " ha sido agregado" );
+                    }
+                    else {
+                    System.out.println( "Sin lugar disponible para:  " 
+                    + nuevoDisco.getNOMBRE() );
+                    }
+                    break;
+                case MUESTRA_DISCOS:
+                    if (catalogo == null || numDscsRegistrados <= 0) {
+                        System.out.println("No hay discos registrados "
+                        + "en el catalogo");
+                        break;
+                    }
+                    System.out.println(muestraCatalogo("Discos disponibles: ") );
+                    break;
+                case MUESTRA_ACTIVOS:
+                    if(catalogo == null || this.numDscsRegistrados <=0){
+                        System.out.println("No hay discos registrados"
+                                            + " en el catalogo. ");
+                        break;
+                    }
+                    System.out.println( muestraActivos("Discos activos \n" +
+                                        "===========") );
+                    break;
+                case PEDIR_TX:
+                    System.out.println( muestraCatalogo("Discos disponibles \n" +
+                    "en el catalogo") );
+                    cualDisco = pideNum(cons, "Elige el numero de disco, ", 0, numDscsRegistrados-1);
+                    if (cualDisco==-1){
+                        System.out.println("El disco elegido no existe");
+                    }
+                    sigDato = catalogo[cualDisco].getActivas();
+                    if ( daTransmision(cualDisco) ){
+                        System.out.println("Disco [" + cualDisco + "]"
+                                            + catalogo[cualDisco].getNOMBRE().trim() 
+                                            + "Transmitiendose " 
+                                            + "empezando a " 
+                                            + daCalendario(fechasTxActivas[cualDisco][sigDato])
+                                            + "\n" );
+                    }
+                    break;
+                case TERMINAR_TX:
+                    System.out.println("Elige la transmision que deseas terminar");
+                    System.out.println( muestraActivos("Discos con transmisiones activas") );
+                    cualDisco = pideNum(cons, "Elige el numero de disco", 0, numDscsRegistrados-1);
+                    if(cualDisco == -1){
+                        System.out.println( "El disco: " + cualDisco + " no existe");
+                        break;
+                    }
+                    if(catalogo[cualDisco].getActivas() <= 0 ){
+                        System.out.println( "El disco: " + cualDisco + " no tiene Tx activas");
+                        break;
+                    }
+                    if(terminaTx(cualDisco, cons)){
+                        System.out.println("La Tx termino");
+                    }
+                    else System.out.println("No se termino la Tx");
+                    break;
+                case MUESTRA_UN_DISCO:
+                    System.out.println( muestraCatalogo("Discos disponibles \n" +
+                                        "en el catalogo") );
+                    cualDisco = pideNum(cons, "Elige el numero de disco", 0, numDscsRegistrados-1);
+                    if(cualDisco == -1){
+                        System.out.println( "El disco elegido: " + cualDisco + " no existe"); 
+                        break;
+                    }
+                    elDisco = catalogo[cualDisco];     
+                    if (elDisco == null){
+                        System.out.println("El disco elegido no existe");
+                        break;
+                    } 
+                    System.out.println(elDisco.muestraDisco("["+ cualDisco + "] Disco: ") );
+                    break;
+                case MUESTRA_HIST:
+                    System.out.println( muestraCatalogo("Discos disponibles \n" +
+                                        "en el catalogo") );
+                    cualDisco = pideNum(cons, "Elige el numero de disco", 0, numDscsRegistrados-1);
+                    if(cualDisco == -1){
+                        System.out.println( "El disco elegido: " + cualDisco + " no existe"); 
+                        break;
+                    }
+                    elDisco = catalogo[cualDisco];     
+                    if (elDisco == null){
+                        System.out.println("El disco elegido no existe");
+                        break;
+                    } 
+                    if (numHist[cualDisco] == 0){
+                        System.out.println("El disco [" + cualDisco + "] no tiene historico" );
+                        break;
+                    }
+                    System.out.println(muestraHist(cualDisco));
+                    break;  
+                case MUESTRA_TODOS_HIST:
+                    System.out.println(muestraHistoricos());
+                    break;
+                default:
+                    System.out.println("Opcion no implementada");
+            }
+
+        }   while (opcion != 0);
+        
+    }
 }
