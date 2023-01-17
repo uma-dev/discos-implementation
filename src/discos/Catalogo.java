@@ -286,13 +286,13 @@ public class Catalogo {
      * @return una cadena con el texto solicitado.
      */
     public String muestraActivas (int cualDisco ){
-        if(catalogo==null || cualDisco<=0 || cualDisco>catalogo.length){
+        if(catalogo==null || cualDisco<0 || cualDisco>=catalogo.length){
             System.out.println("No existe el disco dentro del catalogo");
             return null;
         }
         int cuantas = catalogo[cualDisco].getActivas();
         if(cuantas<=0){
-            System.out.println("EL disco no tiene transmisiones activas");
+            System.out.println("El disco no tiene transmisiones activas");
             return null;
         }
         String cadena = catalogo[cualDisco].muestraDisco("Transmisiones activas: ") + "\n";
@@ -303,6 +303,76 @@ public class Catalogo {
             else cadena += "fecha no registrada \n";
         }
         return cadena;
+    }
+    /**
+     * Metodo para terminar la Tx de un disco del catalogo.
+     * @param cualDisco entero con la posicion del disco que debe terminar su Tx.
+     * @param cons Scanner para seleccionar la Tx a terminar.
+     * @return true si pudo terminar la Tx del disco, false en caso contrario.
+     */
+    public boolean terminaTx(int cualDisco, Scanner cons){
+        if( cualDisco<0 || cualDisco>catalogo.length || catalogo[cualDisco] == null){
+            System.out.println("El disco " + cualDisco + " no existe"  );
+            return false;
+        }
+        System.out.println("Para el disco " + catalogo[cualDisco].muestraDisco( "Disco no:" + cualDisco + " ") );
+        System.out.println("Tenemos las siguientes Tx activas: \n");
+        String cadena = muestraActivas(cualDisco);
+        if (cadena == null){
+            System.out.println("No hay Tx activas");
+            return false;
+        }
+        System.out.println(cadena);
+        int numActivas = catalogo[cualDisco].getActivas();
+        int cualTrans = pideNum(cons, "Elige la Tx a terminar", 0, numActivas-1);
+        if(cualTrans == -1){ 
+            System.out.println("La Tx solicitada no existe");
+            return false;
+        }
+        GregorianCalendar fechaInicio = fechasTxActivas[cualDisco][cualTrans];
+        GregorianCalendar fechaFin = new GregorianCalendar();
+        int donde = numHist[cualDisco];
+        historico[cualDisco][0][donde] = fechaInicio;
+        historico[cualDisco][1][donde] = fechaFin;
+        numHist[cualDisco] ++;
+        System.out.println("Transmision terminada: " + daCalendario(fechaFin));
+        if(eliminaCelda(fechasTxActivas, cualTrans)) catalogo[cualDisco].terminaTransmision();
+        else return false; //No pudo eliminar la celda solicitada en fechasTxActivas
+        return true;       //Si pudo eliminar la celda solicitada en fechasTxActivas
+    }
+    /**
+     * Pide un mensaje del selector, un objeto Scanner, asi como un limite inferior y superior, 
+     * regresa -1 si elige un numero fuera del rango mandado.
+     * @param cons objeto Scanner para hacer la lectura de la opcion solicitada.
+     * @param msg Cadena de texto para mostrar en el selector.
+     * @param min Limite inferior, un entero.
+     * @param max Limite superior, un entero.
+     * @return el numero seleccionado.
+     */
+    private static int pideNum(Scanner cons, String msg, int min, int max){
+
+        return 0;
+    }
+    /**
+     * Elimina la celda solicitada del arreglo y hace los decrementos correspondientes.
+     * @param array un arreglo de objetos
+     * @param elemento posicion del objeto a eliminar.
+     * @return true si pudo eliminar el objeto y false si no pudo.
+     */
+    private static boolean eliminaCelda (Object[] array, int elemento){
+        if (array == null){
+            System.out.println("El arreglo no existe");
+            return false;
+        }
+        if (elemento <0 || elemento >= array.length){
+            System.out.println(" Indice fuera del rango\n");
+            return false;
+        }
+        for (int i=elemento+1; i<array.length || array[i]!=null ;i++){
+            array[i-1]=array[i];
+            array[i] = null; //El ulimo elemento queda valiendo null, de otra forma estaria repetido
+        }
+        return true;
     }
     
 }
