@@ -120,5 +120,40 @@ public class Catalogo {
             this.numDscsRegistrados++; //se actualiza el numero de discos registrados
         }
     }
+    /**
+     * Regresa el catalogo de discos.
+     * @return catalogo, una lista de objetos Disco
+     */
+    public Disco[] getCatalogo(){
+        return this.catalogo;
+    } 
+    /**
+     * Regresa un entero que corresponde al numero de discos registrados.
+     * @return un entero, numDscsRegistrados
+     */
+    public int getNumDscsRegistrados(){
+        return this.numDscsRegistrados;
+    }
+    /**
+     * Regresa un arreglo de dos dimensiones de elementos GregorianCalendar. 
+     * @return fechasTxActivas, un arreglo de dos dimensiones.
+     */
+    public GregorianCalendar[][] getFechasTxActivas(){
+        return this.fechasTxActivas;
+    }
+    /**
+     * Regresa un arreglo de tres dimensiones que representa el historico de cada disco.
+     * @return arreglo de tres dimensiones, historico.
+     */
+    public GregorianCalendar[][][] getHistorico(){
+        return this.historico;
+    }
+    /**
+     * regresa un arreglo de enteros que representa el numero de registros por cada disco en un catalogo.
+     * @return arreglo de una dimension de enteros, numHist.
+     */
+    public int[] getNumHist(){
+        return this.numHist;
+    }
 
 }
