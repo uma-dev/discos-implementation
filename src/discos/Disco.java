@@ -219,7 +219,7 @@ public class Disco implements ServiciosDisco  {
    * @param calendar calendario de la clase GregorianCalendar
    * @return la hora con formato
    */
-  private static String extraeHora( GregorianCalendar calendar){
+  public static String extraeHora( GregorianCalendar calendar){
     int hora = calendar.get(calendar.HOUR);
     int minutos = calendar.get(calendar.MINUTE);
     String minutosString;
@@ -247,7 +247,7 @@ public class Disco implements ServiciosDisco  {
  * @param calendar calendario de la clase GregorianCalendar.
  * @return fecha con formato.
  */
-  private static String extraeFecha( GregorianCalendar calendar){
+  public static String extraeFecha( GregorianCalendar calendar){
     int dia = calendar.get(calendar.DAY_OF_MONTH);
     int mes = calendar.get(calendar.MONTH)+1; //0 corresponde a enero
     int anho = calendar.get(calendar.YEAR);

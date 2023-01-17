@@ -230,24 +230,55 @@ public class Catalogo {
     }
     /**
      * Obtiene una cadena de texto con todos los discos de un catalogo.
-     * @param encabezado Un texto plano antes de mostrar el catalogo.
+     * @param texto Un texto plano antes de mostrar el catalogo.
      * @return cadena de texto con todos los discos.
      */
-    public String muestraCatalogo(String encabezado){
+    public String muestraCatalogo(String texto){
         if (catalogo == null ){
-            return encabezado + "\nNo existe el catalogo de discos";
+            return texto + "\nNo existe el catalogo de discos";
         }
         if(numDscsRegistrados <= 0 ){
-            return encabezado + "\nNo hay registros en el catalogo"; 
+            return texto + "\nNo hay registros en el catalogo"; 
         }
-        encabezado = encabezado == null ? ""+"\n" : encabezado+"\n";
-        for(int i=0; i<catalogo.length; i++){
+        texto = texto == null ? ""+"\n" : texto+"\n";
+        for(int i=0; i<numDscsRegistrados; i++){
             if(catalogo[i] == null){
-                encabezado += "No hay disco en esta posicion";
+                texto += "No hay disco en esta posicion";
                 continue; 
             }
-            encabezado += "Disco no. "+ i + catalogo[i];
+            texto += "\nDisco no. "+ i + catalogo[i];
         }
-        return encabezado;
+        texto += "\n";
+        return texto;
     }
+    /**
+     * Muestra los discos activos junto con sus fechas asociadas. 
+     * @param texto cadena de texto que hace las veces de encabezado.
+     * @return cadena de texto con los discos activos, así como sus fechas de 
+     * transmisiones activas.
+     */
+    public String muestraActivos(String texto){
+        if (catalogo == null || numDscsRegistrados <= 0){
+            return texto + "\n No hay discos en el catalogo";
+        }
+        texto = texto == null ? ""+"\n" : texto+"\n";
+        for(int i=0; i<numDscsRegistrados; i++){
+            if(catalogo[i] == null){continue;}
+            if (catalogo[i].getActivas() <= 0){continue;}
+            texto += "\n Disco no. "+ i + catalogo[i]+ "\n";
+            for (int j=0; j<catalogo[i].getActivas(); j++){ 
+               texto += "\n"+ j + daCalendario(fechasTxActivas[i][j]); 
+            }
+        }
+        texto += "\n";
+        return texto;
+    }
+    private String daCalendario ( GregorianCalendar fecha){
+        if (fecha == null){
+            return "fecha invalida";
+        }
+        String fechaString = Disco.extraeFecha(fecha) + (fecha.get(fecha.HOUR) == 1 ? " A la" : "A las") + Disco.extraeHora(fecha) ;
+        return fechaString;
+    }
+
 }
