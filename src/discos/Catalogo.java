@@ -195,7 +195,7 @@ public class Catalogo {
      * @param nuevoDisco  Objeto tipo Disco. 
      * @return true si es que pudo agregar el nuevo disco  o false si no fue posible
      */
-    public boolean addCatalogo (Disco nuevoDisco){
+    public boolean addDisco (Disco nuevoDisco){
         if(nuevoDisco == null || numDscsRegistrados >= catalogo.length ){ 
             return false;
         }
