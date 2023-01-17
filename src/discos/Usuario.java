@@ -16,6 +16,13 @@ public class Usuario {
         elTuyo.setActivas( elTuyo.getActivas()+ 5);
         System.out.println(elTuyo.daTransmision());
         System.out.println("elTuyo toString(): \t" + elTuyo);
-
+        Catalogo miCatalogo =   new Catalogo(2, new Disco []{
+            new Disco( (short )2, "Descifrando enigma", 2015, 10 ),
+            new Disco( (short )1, "Ahora lo ves ahora no", 2014, 10 ),
+            new Disco( (short )2, "Billions", 2015, 1 ),
+            new Disco( (short )1, "Frank sinatra", 2021, 6 )
+        }); 
+        miCatalogo.conectaCatalogo();
+        
     }
 }
