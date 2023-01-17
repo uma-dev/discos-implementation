@@ -207,6 +207,26 @@ public class Catalogo {
         this.numDscsRegistrados++; //se actualiza el numero de discos registrados
         return true;
     }
-
+    /**
+     * da transmision al disco que esta en la posicion que se indica. 
+     * @param cualDisco entero que indica la posicion del disco al que se le dara la tx.
+     * @return true si pudo hacer la tx, false si no pudo hacerla.
+     */
+    public boolean daTransmision( int cualDisco ){
+        if (cualDisco >= this.catalogo.length || cualDisco < 0) {
+            return false;
+        }
+        if (catalogo[cualDisco] == null ){ 
+            return false;
+        }
+        if (catalogo[cualDisco].getActivas() >= catalogo[cualDisco].getPermitidas()){
+            System.out.println("El disco " + catalogo[cualDisco].getNOMBRE() + " no tiene mas Tx permitdas");
+            return false;
+        }
+        GregorianCalendar fechaAhora = new GregorianCalendar();
+        fechasTxActivas[cualDisco][catalogo[cualDisco].getActivas()] = fechaAhora;
+        System.out.println(catalogo[cualDisco].daTransmision(fechaAhora));
+        return true;
+    }
     
 }
