@@ -128,28 +128,32 @@ public class Catalogo {
         return this.catalogo;
     } 
     /**
-     * Regresa un entero que corresponde al numero de discos registrados.
+     * Regresa un entero que corresponde al numero 
+     * de discos registrados.
      * @return un entero, numDscsRegistrados
      */
     public int getNumDscsRegistrados(){
         return this.numDscsRegistrados;
     }
     /**
-     * Regresa un arreglo de dos dimensiones de elementos GregorianCalendar. 
+     * Regresa un arreglo de dos dimensiones de elementos
+     *  GregorianCalendar. 
      * @return fechasTxActivas, un arreglo de dos dimensiones.
      */
     public GregorianCalendar[][] getFechasTxActivas(){
         return this.fechasTxActivas;
     }
     /**
-     * Regresa un arreglo de tres dimensiones que representa el historico de cada disco.
+     * Regresa un arreglo de tres dimensiones que representa 
+     * el historico de cada disco.
      * @return arreglo de tres dimensiones, historico.
      */
     public GregorianCalendar[][][] getHistorico(){
         return this.historico;
     }
     /**
-     * regresa un arreglo de enteros que representa el numero de registros por cada disco en un catalogo.
+     * regresa un arreglo de enteros que representa el numero
+     *  de registros por cada disco en un catalogo.
      * @return arreglo de una dimension de enteros, numHist.
      */
     public int[] getNumHist(){
@@ -193,7 +197,8 @@ public class Catalogo {
     /**
      * Agrega un disco al catalogo siempre que sea posible.
      * @param nuevoDisco  Objeto tipo Disco. 
-     * @return true si es que pudo agregar el nuevo disco  o false si no fue posible
+     * @return true si es que pudo agregar el nuevo disco  
+     * o false si no fue posible
      */
     public boolean addDisco (Disco nuevoDisco){
         if(nuevoDisco == null || numDscsRegistrados >= catalogo.length ){ 
@@ -209,7 +214,8 @@ public class Catalogo {
     }
     /**
      * da transmision al disco que esta en la posicion que se indica. 
-     * @param cualDisco entero que indica la posicion del disco al que se le dara la tx.
+     * @param cualDisco entero que indica la posicion del disco al que
+     *  se le dara la tx.
      * @return true si pudo hacer la tx, false si no pudo hacerla.
      */
     public boolean daTransmision( int cualDisco ){
@@ -220,7 +226,9 @@ public class Catalogo {
             return false;
         }
         if (catalogo[cualDisco].getActivas() >= catalogo[cualDisco].getPermitidas()){
-            System.out.println("El disco " + catalogo[cualDisco].getNOMBRE() + " no tiene mas Tx permitdas");
+            System.out.println("El disco " 
+                                + catalogo[cualDisco].getNOMBRE() 
+                                + " no tiene mas Tx permitdas");
             return false;
         }
         GregorianCalendar fechaAhora = new GregorianCalendar();
@@ -254,8 +262,8 @@ public class Catalogo {
     /**
      * Muestra los discos activos junto con sus fechas asociadas. 
      * @param texto cadena de texto que hace las veces de encabezado.
-     * @return cadena de texto con los discos activos, así como sus fechas de 
-     * transmisiones activas.
+     * @return cadena de texto con los discos activos, así como
+     *  sus fechas de transmisiones activas.
      */
     public String muestraActivos(String texto){
         if (catalogo == null || numDscsRegistrados <= 0){
@@ -267,7 +275,9 @@ public class Catalogo {
             if (catalogo[i].getActivas() <= 0){continue;}
             texto += "\n Disco no. "+ i + catalogo[i]+ "\n";
             for (int j=0; j<catalogo[i].getActivas(); j++){ 
-               texto += "\n"+ j + daCalendario(fechasTxActivas[i][j]); 
+               texto += "\n"
+                    + j 
+                    + daCalendario(fechasTxActivas[i][j]); 
             }
         }
         texto += "\n";
@@ -277,7 +287,9 @@ public class Catalogo {
         if (fecha == null){
             return "fecha invalida";
         }
-        String fechaString = Disco.extraeFecha(fecha) + (fecha.get(fecha.HOUR) == 1 ? " A la" : "A las") + Disco.extraeHora(fecha) ;
+        String fechaString = Disco.extraeFecha(fecha) 
+                            + (fecha.get(fecha.HOUR) == 1 ? " A la" : "A las")
+                            + Disco.extraeHora(fecha) ;
         return fechaString;
     }
     /**
@@ -298,7 +310,9 @@ public class Catalogo {
         String cadena = catalogo[cualDisco].muestraDisco("Transmisiones activas: ") + "\n";
         for (int i=0; i< cuantas; i++){
             if(fechasTxActivas[cualDisco][i] != null ){
-                cadena += " [" + i + "]\t"+ daCalendario(fechasTxActivas[cualDisco][i]) + "\n";
+                cadena += " [" + i + "]\t" 
+                        + daCalendario(fechasTxActivas[cualDisco][i]) 
+                        + "\n";
             }
             else cadena += "fecha no registrada \n";
         }
@@ -315,7 +329,8 @@ public class Catalogo {
             System.out.println("El disco " + cualDisco + " no existe"  );
             return false;
         }
-        System.out.println("Para el disco " + catalogo[cualDisco].muestraDisco( "Disco no:" + cualDisco + " ") );
+        System.out.println("Para el disco " 
+                        + catalogo[cualDisco].muestraDisco( "Disco no:" + cualDisco + " ") );
         System.out.println("Tenemos las siguientes Tx activas: \n");
         String cadena = muestraActivas(cualDisco);
         if (cadena == null){
@@ -336,13 +351,14 @@ public class Catalogo {
         historico[cualDisco][1][donde] = fechaFin;
         numHist[cualDisco] ++;
         System.out.println("Transmision terminada: " + daCalendario(fechaFin));
-        if(eliminaCelda(fechasTxActivas, cualTrans)) catalogo[cualDisco].terminaTransmision();
+        if(eliminaCelda(fechasTxActivas, cualTrans)) 
+            catalogo[cualDisco].terminaTransmision();
         else return false; //No pudo eliminar la celda solicitada en fechasTxActivas
         return true;       //Si pudo eliminar la celda solicitada en fechasTxActivas
     }
     /**
-     * Pide un mensaje del selector, un objeto Scanner, asi como un limite inferior y superior, 
-     * regresa -1 si elige un numero fuera del rango mandado.
+     * Pide un mensaje del selector, un objeto Scanner, asi como 
+     * un limite inferior y superior, regresa -1 si elige un numero fuera del rango mandado.
      * @param cons objeto Scanner para hacer la lectura de la opcion solicitada.
      * @param msg Cadena de texto para mostrar en el selector.
      * @param min Limite inferior, un entero.
@@ -350,11 +366,18 @@ public class Catalogo {
      * @return el numero seleccionado.
      */
     private static int pideNum(Scanner cons, String msg, int min, int max){
-
-        return 0;
+        int num = -1;
+        System.out.println(msg + "(entre el valor " + min + " y "+ max + ") terminado con [Enter]");
+        num = cons.nextInt();
+        cons.nextLine();
+        if(num > max || num < min){
+            num = -1;
+        }
+        return num;
     }
     /**
-     * Elimina la celda solicitada del arreglo y hace los decrementos correspondientes.
+     * Elimina la celda solicitada del arreglo y hace los 
+     * decrementos correspondientes.
      * @param array un arreglo de objetos
      * @param elemento posicion del objeto a eliminar.
      * @return true si pudo eliminar el objeto y false si no pudo.
@@ -374,5 +397,42 @@ public class Catalogo {
         }
         return true;
     }
-    
+    /**
+     * Muestra el historico de las transmisiones que
+     * solo incluye las inciadas que fueron terminadas en un disco dado.
+     * @param cualDisco posicion del disco que queremos eliminar. 
+     * @return cadena con el historico en formato libre.
+     */
+    public String muestraHist (int cualDisco ){
+        if(cualDisco<0 || cualDisco>=this.numDscsRegistrados){
+            return "Este disco no existe ";
+        }
+        String cadena = "Historico del disco \t" 
+        + catalogo[cualDisco].getNOMBRE()+ "\n";
+        if(numHist[cualDisco] ==0 ){
+            cadena += "Disco sin historicos\n";
+        }        
+        for (int i=0; i<numHist[cualDisco]; i++){
+            cadena += "[" + i + "]" 
+                    + " Tx iniciada: " + daCalendario(historico[cualDisco][0][i]) 
+                    + " TX terminada: " + daCalendario(historico[cualDisco][1][i]) 
+                    + "\n\n";
+        }
+        return cadena;
+    }
+    /**
+     * Muestra el historico de todos los discos que lo tienen dentro
+     * del catalogo, no recibe parametros.
+     * @return Una cadena con los historicos en formato libre.
+     */
+    public String muestraHistoricos (){
+        String cadena = "\t Historico de los discos que lo tienen: \n";
+        for(int i= 0; i<this.numDscsRegistrados ;i++ ){
+            if(catalogo[i] != null ) {
+                cadena += muestraHist(i)+ "\n";
+            }
+        }
+        return cadena;
+    }    
+
 }
