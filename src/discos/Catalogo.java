@@ -190,5 +190,23 @@ public class Catalogo {
         }
     } 
     
+    /**
+     * Agrega un disco al catalogo siempre que sea posible.
+     * @param nuevoDisco  Objeto tipo Disco. 
+     * @return true si es que pudo agregar el nuevo disco  o false si no fue posible
+     */
+    public boolean addCatalogo (Disco nuevoDisco){
+        if(nuevoDisco == null || numDscsRegistrados >= catalogo.length ){ 
+            return false;
+        }
+        this.catalogo[numDscsRegistrados] = nuevoDisco;
+        int numPrest = catalogo[numDscsRegistrados].getPermitidas();
+        fechasTxActivas[numDscsRegistrados] = new GregorianCalendar[numPrest]; 
+        historico[numDscsRegistrados][0] = new GregorianCalendar[numPrest*2];
+        historico[numDscsRegistrados][1] = new GregorianCalendar[numPrest*2];
+        this.numDscsRegistrados++; //se actualiza el numero de discos registrados
+        return true;
+    }
 
+    
 }
