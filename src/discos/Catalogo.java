@@ -167,7 +167,7 @@ public class Catalogo {
             this.fechasTxActivas = null;
             this.historico = null;
             this.numHist = null;
-            return;
+            return; 
         }
         //Inicializacion de atributos en cero y al nuevo tamanho
         this.catalogo = new Disco[catalogoLen];
