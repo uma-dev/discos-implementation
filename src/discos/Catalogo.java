@@ -228,5 +228,26 @@ public class Catalogo {
         System.out.println(catalogo[cualDisco].daTransmision(fechaAhora));
         return true;
     }
-    
+    /**
+     * Obtiene una cadena de texto con todos los discos de un catalogo.
+     * @param encabezado Un texto plano antes de mostrar el catalogo.
+     * @return cadena de texto con todos los discos.
+     */
+    public String muestraCatalogo(String encabezado){
+        if (catalogo == null ){
+            return encabezado + "\nNo existe el catalogo de discos";
+        }
+        if(numDscsRegistrados <= 0 ){
+            return encabezado + "\nNo hay registros en el catalogo"; 
+        }
+        encabezado = encabezado == null ? ""+"\n" : encabezado+"\n";
+        for(int i=0; i<catalogo.length; i++){
+            if(catalogo[i] == null){
+                encabezado += "No hay disco en esta posicion";
+                continue; 
+            }
+            encabezado += "Disco no. "+ i + catalogo[i];
+        }
+        return encabezado;
+    }
 }
