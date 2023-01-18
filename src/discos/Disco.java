@@ -1,8 +1,5 @@
 package discos;
 import java.util.Scanner;
-
-import javax.xml.transform.stax.StAXResult;
-
 import java.util.GregorianCalendar;
 
 /**
@@ -18,7 +15,7 @@ public class Disco implements ServiciosDisco  {
                              DVD = 2,
                              BR = 3;
   private static final int   ANHO1 = 1900, // Primer anho valido
-                             ANHOU = 2016; // Ultimo anho valido
+                             ANHOU = 2023; // Ultimo anho valido
   private static final int MAX_PERMITIDAS =  9999;
   private static final int LUG_TD = 1,
                            LUG_NOMBRE = 40,
@@ -59,7 +56,7 @@ public class Disco implements ServiciosDisco  {
                        + "-->");
     this.NOMBRE = checaCadena(sc.nextLine());
     System.out.print("Ahora toca el anho en que fue grabado "
-                       + "(> 1900):-->");
+                       + "(" + ANHO1 + "-"+ ANHOU + "): -->");
     this.ANHO = checaFecha(sc.nextInt(),ANHO1,ANHOU);
     sc.nextLine();
     System.out.print("Dame ahora el numero de "
@@ -67,7 +64,7 @@ public class Disco implements ServiciosDisco  {
     this.permitidas = checaRangos(sc.nextInt(),1,MAX_PERMITIDAS);
     sc.nextLine();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
     System.out.println("Gracias");
-    sc.close();
+    //sc.close(); //FIX-Cierra el Scanner del metodo main 
   }
   
   /**
@@ -197,8 +194,8 @@ public class Disco implements ServiciosDisco  {
   public String daTransmision( GregorianCalendar calendar)   {
     boolean siHay = activas < permitidas ? true : false;
     activas += siHay ? 1: 0;
-    return siHay ? ("Tx a las: " + extraeHora(calendar) + 
-                " del " + extraeFecha(calendar)) : "No hay Tx disponibles";
+    return siHay ? ("Tx a las: " + daHora(calendar) + 
+                " del " + daFecha(calendar)) : "No hay Tx disponibles";
   } 
  /**
    * Otorga una transmision, contestando con la fecha y hora en que
@@ -211,28 +208,31 @@ public class Disco implements ServiciosDisco  {
     GregorianCalendar cal = new GregorianCalendar(); 
     boolean siHay = activas < permitidas ? true : false;
     activas += siHay ? 1: 0;
-    return siHay ? ("Tx a las: " + extraeHora(cal) + 
-                " del " + extraeFecha(cal)) : "No hay Tx disponibles";
+    return siHay ? ("Tx a las: " + daHora(cal) + 
+                " del " + daFecha(cal)) : "No hay Tx disponibles";
   } 
   /**
    * Obtiene la fecha con formato a partir de un objeto de la clase GregorianCaledar
    * @param calendar calendario de la clase GregorianCalendar
    * @return la hora con formato
    */
-  public static String extraeHora( GregorianCalendar calendar){
+  public static String daHora( GregorianCalendar calendar){
     int hora = calendar.get(calendar.HOUR);
     int minutos = calendar.get(calendar.MINUTE);
-    String minutosString;
+    int segundos = calendar.get(calendar.SECOND);
     String ampm = calendar.get(calendar.AM_PM) == calendar.AM
                   ? "AM"
                   : "PM";
     hora = (hora%12 == 0 && calendar.get(calendar.AM_PM) == calendar.PM)
           ? 12 
           : hora;
-    minutosString =  minutos<10
+    String minutosString =  minutos<10
                   ? "0"+minutos 
-                  : "" + minutos;    
-    return "" + hora + ":" + minutosString + " " + ampm;
+                  : "" + minutos;  
+    String segundosString =  segundos<10
+                  ? "0"+segundos 
+                  : "" + segundos;        
+    return "" + hora + ":" + minutosString + ":" + segundosString + " " + ampm;
   }
 /**
  * Obtiene el nombre de la semana correspondiente a su posicion
@@ -247,7 +247,7 @@ public class Disco implements ServiciosDisco  {
  * @param calendar calendario de la clase GregorianCalendar.
  * @return fecha con formato.
  */
-  public static String extraeFecha( GregorianCalendar calendar){
+  public static String daFecha( GregorianCalendar calendar){
     int dia = calendar.get(calendar.DAY_OF_MONTH);
     int mes = calendar.get(calendar.MONTH)+1; //0 corresponde a enero
     int anho = calendar.get(calendar.YEAR);
@@ -260,8 +260,8 @@ public class Disco implements ServiciosDisco  {
    */
   @Override
   public boolean terminaTransmision()   {
-    boolean hayActivas = this.activas > 0;
-    this.activas -= hayActivas ? 1 : 0 ;
+    boolean hayActivas = activas > 0;
+    activas -= hayActivas ? 1 : 0;
     return hayActivas;
   }
  /** Proporciona una cadena con los distintos campos ocupando un

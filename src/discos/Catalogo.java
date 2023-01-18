@@ -85,7 +85,6 @@ public class Catalogo {
      * @param numDscs entero con el numero de discos para el catalogo
      */
     public Catalogo ( int numDscs ){
-        this.catalogo = new Disco[ Disco.checaRangos (numDscs,1,MAX_DISCOS)]; //verifica lim sup e inf mediante el metodo estatico checaRangos de Disco 
         this.numDscsRegistrados = 0; // No hay discos registrados
         this.fechasTxActivas = new GregorianCalendar[catalogo.length][];
         this.historico = new GregorianCalendar[catalogo.length][2][]; //Hay catalogo.legth numero de tablas y 2 renglones (fecha de inicio, fecha de fin)
@@ -99,7 +98,7 @@ public class Catalogo {
     public Catalogo ( int numDscs, Disco[] arregloInicial){
         int numIniciales =  arregloInicial == null ? 0 : arregloInicial.length; //descartar que sea null
         numDscs = Math.max(numIniciales, numDscs);   //descartar que haya mas elementos en el arregloInicial que numDscs
-        numDscs = Disco.checaRangos(numDscs, 1, MAX_DISCOS); //verificar que este en el rango permitido, este el tamanho del catalogo
+        //numDscs = Disco.checaRangos(numDscs, 1, MAX_DISCOS); //verificar que este en el rango permitido, este el tamanho del catalogo
         numIniciales = Math.min(numIniciales, numDscs); // Numero de discos a copiar (arregloLength), son el minimo entre los que se le pasaron y el tamanho del catalogo.
         
         this.catalogo = new Disco[numDscs];
@@ -203,7 +202,7 @@ public class Catalogo {
         if(nuevoDisco == null || numDscsRegistrados >= catalogo.length ){ 
             return false;
         }
-        this.catalogo[numDscsRegistrados] = nuevoDisco;
+        catalogo[numDscsRegistrados] = nuevoDisco;
         int numPrest = catalogo[numDscsRegistrados].getPermitidas();
         fechasTxActivas[numDscsRegistrados] = new GregorianCalendar[numPrest]; 
         historico[numDscsRegistrados][0] = new GregorianCalendar[numPrest*2];
@@ -225,9 +224,9 @@ public class Catalogo {
             return false;
         }
         if (catalogo[cualDisco].getActivas() >= catalogo[cualDisco].getPermitidas()){
-            System.out.println("El disco " 
+            System.out.println("\nEl disco " 
                                 + catalogo[cualDisco].getNOMBRE() 
-                                + " no tiene mas Tx permitdas");
+                                + " no tiene mas Tx permitidas\n");
             return false;
         }
         GregorianCalendar fechaAhora = new GregorianCalendar();
@@ -253,7 +252,7 @@ public class Catalogo {
                 texto += "No hay disco en esta posicion";
                 continue; 
             }
-            texto += "\nDisco no. "+ i + " " + catalogo[i];
+            texto += "\nDisco ["+ i + "] " + catalogo[i];
         }
         texto += "\n";
         return texto;
@@ -268,27 +267,28 @@ public class Catalogo {
         if (catalogo == null || numDscsRegistrados <= 0){
             return texto + "\n No hay discos en el catalogo";
         }
-        texto = texto == null ? ""+"\n" : texto+"\n";
+        String cadena = texto == null ? "\n" : texto+"\n";
         for(int i=0; i<numDscsRegistrados; i++){
             if(catalogo[i] == null){continue;}
-            if (catalogo[i].getActivas() <= 0){continue;}
-            texto += "\n  Disco no."+ i + ": " + catalogo[i]+ "\n";
-            for (int j=0; j<catalogo[i].getActivas(); j++){ 
-               texto += "\t["
+            int numActivas = catalogo[i].getActivas();
+            if (numActivas <= 0){continue;}
+            cadena += "\n  Disco ["+ i + "] " + catalogo[i]+ "\n";
+            for (int j=0; j<numActivas; j++){ 
+               cadena += "\t["
                     + j + "] "
                     + daCalendario(fechasTxActivas[i][j]) + "\n"; 
             }
         }
-        texto += "\n";
-        return texto;
+        cadena += "\n";
+        return cadena;
     }
     private String daCalendario ( GregorianCalendar fecha){
         if (fecha == null){
             return " fecha invalida";
         }
-        String fechaString = Disco.extraeFecha(fecha) 
+        String fechaString = Disco.daFecha(fecha) 
                             + (fecha.get(fecha.HOUR) == 1 ? " a la" : " a las ")
-                            + Disco.extraeHora(fecha) ;
+                            + Disco.daHora(fecha) ;
         return fechaString;
     }
     /**
@@ -303,13 +303,13 @@ public class Catalogo {
         }
         int cuantas = catalogo[cualDisco].getActivas();
         if(cuantas<=0){
-            System.out.println("El disco no tiene transmisiones activas");
+            System.out.println("El disco no tiene Tx activas");
             return null;
         }
-        String cadena = catalogo[cualDisco].muestraDisco("Transmisiones activas: ") + "\n";
+        String cadena = catalogo[cualDisco].muestraDisco("Tx activas: ") + "\n";
         for (int i=0; i< cuantas; i++){
             if(fechasTxActivas[cualDisco][i] != null ){
-                cadena += " [" + i + "]\t " 
+                cadena += "    [" + i + "] " 
                         + daCalendario(fechasTxActivas[cualDisco][i]) 
                         + "\n";
             }
@@ -328,8 +328,8 @@ public class Catalogo {
             System.out.println("El disco " + cualDisco + " no existe"  );
             return false;
         }
-        System.out.println("Para el disco " 
-                        + catalogo[cualDisco].muestraDisco( "Disco no:" + cualDisco + " ") );
+        System.out.println("\n -------------------------\nPara el disco " 
+                        + catalogo[cualDisco].muestraDisco( "Disco [" + cualDisco + "] ") );
         System.out.println("Tenemos las siguientes Tx activas: \n");
         String cadena = muestraActivas(cualDisco);
         if (cadena == null){
@@ -350,9 +350,10 @@ public class Catalogo {
         historico[cualDisco][1][donde] = fechaFin;
         numHist[cualDisco] ++;
         System.out.println("Transmision terminada: " + daCalendario(fechaFin));
-        if(eliminaCelda(fechasTxActivas, cualTrans)) 
+        if(eliminaCelda(fechasTxActivas, cualTrans)) {
             catalogo[cualDisco].terminaTransmision();
-        else return false; //No pudo eliminar la celda solicitada en fechasTxActivas
+        }
+        else {return false;} //No pudo eliminar la celda solicitada en fechasTxActivas
         return true;       //Si pudo eliminar la celda solicitada en fechasTxActivas
     }
     /**
@@ -390,9 +391,7 @@ public class Catalogo {
             System.out.println(" Indice fuera del rango\n");
             return false;
         }
-        System.out.println(elemento);
-        System.out.println(array.length);
-        for (int i=elemento+1; i<array.length || array[i]!=null ;i++){
+        for (int i=elemento+1; i<array.length && array[i]!=null; i++){
             array[i-1]=array[i];
             array[i] = null; //El ulimo elemento queda valiendo null, de otra forma estaria repetido
         }
@@ -444,7 +443,7 @@ public class Catalogo {
         Scanner cons = new Scanner(System.in);
         Disco nuevoDisco;
         Disco elDisco;
-        int opcion;
+        int opcion=0;
 
         System.out.println("\n---------Bienvenido al sistema----------");
         do{
@@ -457,7 +456,7 @@ public class Catalogo {
             }
 
             System.out.println("\n Elige una opcion              ----->");
-            opcion= pideNum(cons, "" , 0, MENU_CATALOGO.length-1 );
+            opcion = pideNum(cons, " ", 0, MENU_CATALOGO.length );
             int cualDisco;
             int sigDato;
             switch (opcion){
@@ -465,7 +464,7 @@ public class Catalogo {
                     System.out.println("Programa terminado, hasta pronto. ");
                     continue;
                 case AGREGA:
-                    nuevoDisco = new Disco();
+                    nuevoDisco = new Disco( );
                     if(addDisco(nuevoDisco)){
                         System.out.println( "El disco " + nuevoDisco.getNOMBRE() 
                                              + " ha sido agregado" );
@@ -493,11 +492,12 @@ public class Catalogo {
                                         "================") );
                     break;
                 case PEDIR_TX:
-                    System.out.println( muestraCatalogo("Discos disponibles \n" +
+                    System.out.println( muestraCatalogo("Discos disponibles " +
                     "en el catalogo") );
                     cualDisco = pideNum(cons, "Elige el numero de disco, ", 0, numDscsRegistrados-1);
                     if (cualDisco==-1){
                         System.out.println("El disco elegido no existe");
+                        break;
                     }
                     sigDato = catalogo[cualDisco].getActivas();
                     if ( daTransmision(cualDisco) ){
@@ -511,23 +511,23 @@ public class Catalogo {
                     break;
                 case TERMINAR_TX:
                     System.out.println("Elige la transmision que deseas terminar");
-                    System.out.println( muestraActivos("Discos con transmisiones activas\n ") );
+                    System.out.println( muestraActivos("Discos con transmisiones activas ") );
                     cualDisco = pideNum(cons, "Elige el numero de disco", 0, numDscsRegistrados-1);
                     if(cualDisco == -1){
-                        System.out.println( "El disco: " + cualDisco + " no existe");
+                        System.out.println( "El disco seleccionado no existe");
                         break;
                     }
                     if(catalogo[cualDisco].getActivas() <= 0 ){
                         System.out.println( "El disco: " + cualDisco + " no tiene Tx activas");
                         break;
                     }
-                    if(terminaTx(cualDisco, cons)){
-                        System.out.println("La Tx termino");
+                    if( terminaTx( cualDisco, cons)){
+                        System.out.println("La Tx termino\n");
                     }
-                    else System.out.println("No se termino la Tx");
+                    else System.out.println("No se termino la Tx\n");
                     break;
                 case MUESTRA_UN_DISCO:
-                    System.out.println( muestraCatalogo("Discos disponibles \n" +
+                    System.out.println( muestraCatalogo("Discos disponibles " +
                                         "en el catalogo") );
                     cualDisco = pideNum(cons, "Elige el numero de disco", 0, numDscsRegistrados-1);
                     if(cualDisco == -1){
@@ -539,10 +539,10 @@ public class Catalogo {
                         System.out.println("El disco elegido no existe");
                         break;
                     } 
-                    System.out.println(elDisco.muestraDisco("["+ cualDisco + "] Disco: ")  + "\n");
+                    System.out.println(elDisco.muestraDisco("Disco [" + cualDisco  + "] ") + "\n");
                     break;
                 case MUESTRA_HIST:
-                    System.out.println( muestraCatalogo("Discos disponibles \n" +
+                    System.out.println( muestraCatalogo("Discos disponibles " +
                                         "en el catalogo") );
                     cualDisco = pideNum(cons, "Elige el numero de disco", 0, numDscsRegistrados-1);
                     if(cualDisco == -1){
@@ -567,7 +567,7 @@ public class Catalogo {
                     System.out.println("Opcion no implementada");
             }
 
-        }   while (opcion != 0);
+        }  while (opcion != 0);
         
     }
 }
