@@ -4,11 +4,11 @@ import java.util.GregorianCalendar;
 
 /**
  * Disco digital para su uso por una companhia de 
- * "streamming". Se usa como ejemplo introductorio a 
+ * "streamming". Se usa como ejemplo a 
  * algunos aspectos de Java.
  *
  * @author Coursera
- * @version 1.1, 09/11/23.
+ * @version 1.1, 2023.
  */                           
 public class Disco implements ServiciosDisco  {
   private static final short CD = 1,
@@ -339,7 +339,7 @@ public class Disco implements ServiciosDisco  {
    * @param que un numero entero.
    * @param limI entero menor valido.
    * @param limS entero mayor valido.
-   * @return un entero tal que limI <= entero <= limS.
+   * @return un entero tal que limI dentro de los limites especificados.
    */
   public static int checaRangos(int que, int limI, int limS)  {
     return que < limI

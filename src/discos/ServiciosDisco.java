@@ -5,7 +5,7 @@ package discos;
  * Se usa como ejemplo en algunos aspectos introductorios a Java.
  * 
  * @autor: Coursera
- * @version: 1.0, 8/01/2023 
+ * @version: 1.0, 2023 
  */
 
  public interface ServiciosDisco{ 

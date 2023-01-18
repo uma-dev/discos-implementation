@@ -4,13 +4,14 @@ import java.util.Scanner;
 import java.util.GregorianCalendar;
 
 /**
- * Simula el uso de un catalogo de discos.
- * No se implementa alguna interfaz, y en cada sesion se puede  agregar discos, 
+ * Simula el uso de un catalogo de discos; 
+ * no se implementa alguna interfaz, y en cada sesion se puede  agregar discos, 
  * consultar el catalogo, iniciar transmisiones o terminar transmisiones. Toda
  * actividad hecha se registra en el catalogo. 
  * @author Coursera 
  * @version 2023
  */
+
 public class Catalogo {
     //Constantes de clase
     /** Numero maximo de discos en el catalogo */
