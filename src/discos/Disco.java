@@ -7,8 +7,8 @@ import java.util.GregorianCalendar;
  * "streamming". Se usa como ejemplo introductorio a 
  * algunos aspectos de Java.
  *
- * @author Elisa Viso.
- * @version 1.0, 09/11/15.
+ * @author Coursera
+ * @version 1.1, 09/11/23.
  */                           
 public class Disco implements ServiciosDisco  {
   private static final short CD = 1,
