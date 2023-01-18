@@ -4,6 +4,7 @@ public class Usuario {
     public static void main(String[] args) {
         String saludo = "Bienvenido al sistema de streaming";
         System.out.println(saludo);
+
         
         Catalogo miCatalogo =   new Catalogo(6, new Disco []{
             new Disco( (short )2, "Descifrando enigma", 2015, 10 ),

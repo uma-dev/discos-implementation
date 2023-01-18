@@ -324,10 +324,14 @@ public class Catalogo {
      * @return true si pudo terminar la Tx del disco, false en caso contrario.
      */
     public boolean terminaTx(int cualDisco, Scanner cons){
-        if( cualDisco<0 || cualDisco>catalogo.length || catalogo[cualDisco] == null){
+        if( cualDisco<0 || cualDisco>=numDscsRegistrados || catalogo[cualDisco] == null){
             System.out.println("El disco " + cualDisco + " no existe"  );
             return false;
         }
+        if (cons == null )  {      // verificar consola
+            System.out.println("No es una consola valida");
+            return false;
+          }
         System.out.println("\n -------------------------\nPara el disco " 
                         + catalogo[cualDisco].muestraDisco( "Disco [" + cualDisco + "] ") );
         System.out.println("Tenemos las siguientes Tx activas: \n");
@@ -350,12 +354,13 @@ public class Catalogo {
         historico[cualDisco][1][donde] = fechaFin;
         numHist[cualDisco] ++;
         System.out.println("Transmision terminada: " + daCalendario(fechaFin));
-        if(eliminaCelda(fechasTxActivas, cualTrans)) {
+        if( eliminaCelda(fechasTxActivas[cualDisco], cualTrans) ) {
             catalogo[cualDisco].terminaTransmision();
+            return true;       //Si pudo eliminar la celda solicitada en fechasTxActivas
         }
-        else {return false;} //No pudo eliminar la celda solicitada en fechasTxActivas
-        return true;       //Si pudo eliminar la celda solicitada en fechasTxActivas
+        return false; //No pudo eliminar la celda solicitada en fechasTxActivas
     }
+
     /**
      * Pide un mensaje del selector, un objeto Scanner, asi como 
      * un limite inferior y superior, regresa -1 si elige un numero fuera del rango mandado.
@@ -416,9 +421,9 @@ public class Catalogo {
             cadena += "\t[" + i + "]" 
                     + " Tx iniciada: " + daCalendario(historico[cualDisco][0][i]) 
                     + " TX terminada: " + daCalendario(historico[cualDisco][1][i]) 
-                    + "\n\n";
+                    + "\n";
         }
-        return cadena;
+        return cadena += "\n";
     }
     /**
      * Muestra el historico de todos los discos que lo tienen dentro
@@ -429,12 +434,14 @@ public class Catalogo {
         String cadena = "Historico de los discos que lo tienen: \n---------------------------------------\n";
         for(int i= 0; i<this.numDscsRegistrados ;i++ ){
             if(catalogo[i] != null ) {
-                cadena += muestraHist(i)+ "\n";
+                cadena += muestraHist(i);
             }
         }
         return cadena;
     }  
-
+    /** 
+     * Menu iterativo sobre las funcionalidades
+     */
     public void conectaCatalogo(){
         // Saludar al usuario
         // Mostrarle el menu
