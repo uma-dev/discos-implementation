@@ -20,15 +20,15 @@ This is a CLI programm, so you can execute the class **Usuario** by terminal or 
   ```
 To extend feel free to read the javadoc page in  `doc/index.html`
 <p align="center">
-   <img src="https://user-images.githubusercontent.com/22565959/215163396-7b3f748d-f199-40af-9a03-0602dc56a95b.png" width="400"/>
+   <img src="https://user-images.githubusercontent.com/22565959/215163396-7b3f748d-f199-40af-9a03-0602dc56a95b.png" width="700"/>
 </p>  
 
 <p align="center">
-   <img src="https://user-images.githubusercontent.com/22565959/215163464-51417d32-51de-4e8a-9f58-596fb469a58b.png" width="400"/>
+   <img src="https://user-images.githubusercontent.com/22565959/215163464-51417d32-51de-4e8a-9f58-596fb469a58b.png" width="700"/>
 </p> 
 
 <p align="center">
-   <img src="https://user-images.githubusercontent.com/22565959/215163538-e9d16e77-840f-4b31-a459-a1584f8d6ab7.png"/>
+   <img src="https://user-images.githubusercontent.com/22565959/215163538-e9d16e77-840f-4b31-a459-a1584f8d6ab7.png" width="700"/>
 </p> 
 
 
