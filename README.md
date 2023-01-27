@@ -1,18 +1,17 @@
-## Getting Started
+# Streaming
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+Here is a Java project written for the Coursera online [course](https://mx.coursera.org/learn/introduccion-java) of [Elisa Viso Gurovich](https://www.coursera.org/instructor/elisa-viso) and modified by me. Its pourpuse is to ilustrate and puts hands on the best progamming practices of OOP, Javadoc docummentation and demonstrate how easy it is to scale a large project using this paradigm.  
 
 ## Folder Structure
 
-The workspace contains two folders by default, where:
+The workspace contains three folders by default, where:
 
 - `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+- `bin`: the folder to contain the compiled output files 
+- `doc`: the folder to maintain Javadoc docummentation
 
 > If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
 
-## Dependency Management
+## How does it work
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+
