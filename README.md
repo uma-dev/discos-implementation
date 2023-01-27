@@ -1,6 +1,6 @@
 # Streaming
 
-Here is a Java project written for the Coursera online [course](https://mx.coursera.org/learn/introduccion-java) of [Elisa Viso Gurovich](https://www.coursera.org/instructor/elisa-viso) and modified by me. Its pourpuse is to ilustrate and puts hands on the best progamming practices of OOP, Javadoc docummentation and demonstrate how easy it is to scale a large project using this paradigm.  
+Here is a Java project written for the Coursera online [course](https://mx.coursera.org/learn/introduccion-java) of [Elisa Viso Gurovich](https://www.coursera.org/instructor/elisa-viso) and modified by me. Its pourpuse is to ilustrate and put hands on the best progamming practices of OOP, Javadoc docummentation and demonstrate how easy it is to scale a large project using this paradigm.  
 
 ## Folder Structure
 
